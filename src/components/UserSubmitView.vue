@@ -66,7 +66,7 @@
       </div>
       <CodeEditor
         :language="'java'"
-        :value="submitCode"
+        :value="historyCode"
         :readOnly="true"
         style="height: 450px"
       />
@@ -95,7 +95,7 @@ const showDetails = ref(false); // 控制是否显示详情视图
 const tableRef = ref();
 const dataList = ref([]);
 const total = ref(0);
-const submitCode = ref("");
+const historyCode = ref("");
 // 搜索请求
 const searchParams = ref<QuestionSubmitQueryRequest>({
   questionId: props.queId as any,
@@ -128,14 +128,12 @@ defineExpose({ loadData });
 const emit = defineEmits(["itemClicked"]);
 
 function handleItemClick(item) {
-  const targetRecord = dataList.value.find((item) => item.id == item.id);
 
-  submitCode.value = targetRecord.submitCode;
+  const targetRecord = dataList.value.find((itemUse) => itemUse.id == item.id);
+
+  historyCode.value = targetRecord.submitCode;
   showDetails.value = true;
-  console.log(targetRecord.submitCode);
 
-  // 通知父组件项被点击，可以传递需要的数据
-  emit("itemClicked", item.id);
 }
 
 function backToList(){
