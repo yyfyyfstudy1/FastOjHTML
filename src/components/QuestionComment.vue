@@ -15,7 +15,7 @@
       </template>
         <!-- 递归渲染子评论，同时确保子评论存在 -->
         <template v-if="comment.children && comment.children.length">
-          <QuestionComment :comments="comment.children" />
+          <QuestionComment :comments="comment.children" @child-event="$emit('child-event')"/>
         </template>
   
       </a-comment>

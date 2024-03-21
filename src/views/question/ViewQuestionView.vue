@@ -165,37 +165,35 @@ let commentForm = ref({
 const comments = ref([
 ]);
 function flattenComments(comments, level = 1, parentAuthor = null) {
-  return comments.reduce((acc, comment) => {
+  let allComments = []; // 用于收集所有评论，包括平级化的子评论
 
-    // 创建评论副本，避免直接修改原始数据，但不立即清空 children
-    const commentCopy = { ...comment, replyTo: parentAuthor };
+  comments.forEach(comment => {
+    const commentCopy = { ...comment, replyTo: parentAuthor, children: [] };
 
     if (level < 3) {
-      // 对于一级和二级评论，正常递归处理子评论
+      // 一级和二级评论，正常递归
       commentCopy.children = comment.children ? flattenComments(comment.children, level + 1, comment.userName) : [];
-      acc.push(commentCopy);
+      allComments.push(commentCopy);
     } else {
-      // 对于三级及以上的评论，先将当前评论（不含子评论）添加到数组
-      const commentWithoutChildren = { ...commentCopy, children: [] };
-      acc.push(commentWithoutChildren);
+      // 三级及以下评论，将当前评论添加到数组，并处理其子评论
+      allComments.push(commentCopy);
 
-      // 如果当前是三级评论，并且有子评论，则将子评论平级化
-      if (comment.children) {
-        const flattenedChildren = comment.children.map(child => ({ 
-          ...child, 
-          replyTo: comment.userName,
-          children: [] // 清空子评论的子节点
-        }));
-        // 将处理后的子评论作为当前层级的评论添加
-        acc.push(...flattenedChildren);
+      // 如果有子评论，平级化这些子评论并将它们添加到allComments中
+      if (comment.children && comment.children.length > 0) {
+        const flattenedChildren = flattenComments(comment.children, level + 1, comment.userName);
+        allComments = allComments.concat(flattenedChildren);
       }
-      acc.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
-
     }
+  });
 
-    return acc;
-  }, []);
+  // 如果是在处理顶层调用（即第一次调用此函数），对所有评论进行排序
+  if (level === 1) {
+    allComments.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+  }
+
+  return allComments;
 }
+
 const visible = ref(false);
 
 // 提交新评论
@@ -263,8 +261,10 @@ const loadData = async () => {
     questionId: question.value.id,
   });
   if (res2.code === 0) {
-    comments.value = res2.data;
     comments.value = flattenComments(res2.data);
+    // comments.value = res2.data;
+    console.log("___________________________________")
+    console.log(comments.value)
   } else {
     message.error("加载失败，" + res.message);
   }
@@ -373,7 +373,6 @@ const changeCode = (value: string) => {
 
 <style>
 #viewQuestionView {
-  max-width: 1600px;
   margin: 0 auto;
   box-shadow: 0px 0px 10px rgba(35, 7, 7, 0.21);
   border-radius: 10px;
