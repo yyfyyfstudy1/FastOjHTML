@@ -4,12 +4,15 @@
 /* eslint-disable */
 import type { BaseResponse_boolean_ } from '../models/BaseResponse_boolean_';
 import type { BaseResponse_int_ } from '../models/BaseResponse_int_';
+import type { BaseResponse_List_Comment_ } from '../models/BaseResponse_List_Comment_';
 import type { BaseResponse_long_ } from '../models/BaseResponse_long_';
 import type { BaseResponse_Page_Question_ } from '../models/BaseResponse_Page_Question_';
 import type { BaseResponse_Page_QuestionSubmitVO_ } from '../models/BaseResponse_Page_QuestionSubmitVO_';
 import type { BaseResponse_Page_QuestionVO_ } from '../models/BaseResponse_Page_QuestionVO_';
 import type { BaseResponse_Question_ } from '../models/BaseResponse_Question_';
 import type { BaseResponse_QuestionVO_ } from '../models/BaseResponse_QuestionVO_';
+import type { Comment } from '../models/Comment';
+import type { CommentDto } from '../models/CommentDto';
 import type { DeleteRequest } from '../models/DeleteRequest';
 import type { QuestionAddRequest } from '../models/QuestionAddRequest';
 import type { QuestionEditRequest } from '../models/QuestionEditRequest';
@@ -39,6 +42,28 @@ questionAddRequest: QuestionAddRequest,
             method: 'POST',
             url: '/api/question/add',
             body: questionAddRequest,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * 添加评论
+     * @param comment comment
+     * @returns BaseResponse_boolean_ OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static addCommentUsingPost(
+comment: Comment,
+): CancelablePromise<BaseResponse_boolean_ | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/question/addComment',
+            body: comment,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -195,6 +220,28 @@ questionQueryRequest: QuestionQueryRequest,
             method: 'POST',
             url: '/api/question/my/list/page/vo',
             body: questionQueryRequest,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * 获取评论列表
+     * @param useDto useDto
+     * @returns BaseResponse_List_Comment_ OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static listCommentUsingPost(
+useDto: CommentDto,
+): CancelablePromise<BaseResponse_List_Comment_ | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/question/question/comment/tree',
+            body: useDto,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

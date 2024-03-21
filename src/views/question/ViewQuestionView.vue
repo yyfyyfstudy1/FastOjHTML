@@ -35,15 +35,28 @@
 
 
           <a-tab-pane key="comment" title="评论"> 
-            <a-card :key="activeTabKey"/>
+           
+           
+            <!-- 评论区 -->
+            <div class="comments-container">
+                 <!-- 添加新评论的外框 -->
+            <div class="add-solution-container">
+              Hey! join us today and contribute your answer to this question
+              <span class="add-solution-btn" @click="showReplyDialog()">  Add a new solution</span>
+            </div>
+             <QuestionComment :comments="comments" @child-event="loadData" style="margin-left:20px; margin-top:20px"/>
+            </div>
+
+            
           </a-tab-pane>
 
 
           <a-tab-pane key="answer" title="Submissions"> 
-            
-            <!-- 内嵌用户提交代码视图 -->
+          
+                <!-- 内嵌用户提交代码视图 -->
             <UserSubmitView :queId="id"  :key="activeTabKey"  ref="userSubmitViewRef" @itemClicked="handleItemClicked"/>
             
+          
           </a-tab-pane>
 
       
@@ -91,20 +104,35 @@
         
       </a-col>
     </a-row>
+
+    <a-modal v-model:visible="visible" @ok="handleOk" @cancel="handleCancel">
+      <template #title>
+       Edit new solution
+      </template>
+      <div>
+          <!-- 评论输入区 -->
+          <div class="comment-input-area">
+            <MdEditor :value="newComment" :handle-change="onContentChange" />
+          </div>
+      </div>
+    </a-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, withDefaults, defineProps ,nextTick , watch, defineExpose } from "vue";
+import { onMounted, ref, withDefaults,defineEmits , defineProps ,nextTick , watch, defineExpose } from "vue";
 import {
   QuestionControllerService,
   QuestionSubmitAddRequest,
   QuestionVO,
+  CommentDto
 } from "../../../backapi";
 import message from "@arco-design/web-vue/es/message";
 import CodeEditor from "@/components/CodeEditor.vue";
 import MdViewer from "@/components/MdViewer.vue";
 import UserSubmitView from "@/components/UserSubmitView.vue";
+import QuestionComment from "@/components/QuestionComment.vue"
+import MdEditor from "@/components/MdEditor.vue";
 
 interface Props {
   id: string;
@@ -119,8 +147,101 @@ const props = withDefaults(defineProps<Props>(), {
 const activeTabKey = ref('question'); // 控制激活的Tab
 
 const question = ref<QuestionVO>();
+const newComment = ref('');
 
 
+
+// 评论form
+
+let commentForm = ref({
+  parentCommentId: "",
+  questionId: "",
+  content: ""
+});
+
+
+
+// 示例评论数据，实际应用中应从外部获取
+const comments = ref([
+]);
+function flattenComments(comments, level = 1, parentAuthor = null) {
+  return comments.reduce((acc, comment) => {
+
+    // 创建评论副本，避免直接修改原始数据，但不立即清空 children
+    const commentCopy = { ...comment, replyTo: parentAuthor };
+
+    if (level < 3) {
+      // 对于一级和二级评论，正常递归处理子评论
+      commentCopy.children = comment.children ? flattenComments(comment.children, level + 1, comment.userName) : [];
+      acc.push(commentCopy);
+    } else {
+      // 对于三级及以上的评论，先将当前评论（不含子评论）添加到数组
+      const commentWithoutChildren = { ...commentCopy, children: [] };
+      acc.push(commentWithoutChildren);
+
+      // 如果当前是三级评论，并且有子评论，则将子评论平级化
+      if (comment.children) {
+        const flattenedChildren = comment.children.map(child => ({ 
+          ...child, 
+          replyTo: comment.userName,
+          children: [] // 清空子评论的子节点
+        }));
+        // 将处理后的子评论作为当前层级的评论添加
+        acc.push(...flattenedChildren);
+      }
+      acc.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+
+    }
+
+    return acc;
+  }, []);
+}
+const visible = ref(false);
+
+// 提交新评论
+const handleOk = async() => {
+
+  if (newComment.value.trim() === '') {
+    alert('The content is empty !');
+    return;
+  }
+  commentForm.value.content = newComment.value;
+  commentForm.value.parentCommentId = 0;
+  commentForm.value.questionId = question.value.id
+  const res = await QuestionControllerService.addCommentUsingPost(
+      commentForm.value
+    );
+    if (res.code === 0) {
+      
+      message.success("Add comment successful !");
+      // 提交后清空输入框
+      newComment.value = '';
+      visible.value = false;
+      // TODO 
+      loadData();
+    } else {
+      message.error("Submit Failed" + res.message);
+    }
+  };
+
+const handleCancel = () => {
+      visible.value = false;
+    }
+
+// 显示回复弹窗的方法
+function showReplyDialog() {
+  visible.value = true;
+}
+
+
+// 使用示例
+const flattenedComments = ref();
+
+
+
+const onContentChange = (value: string) => {
+  newComment.value = value;
+};
 const loadData = async () => {
   const res = await QuestionControllerService.getQuestionVoByIdUsingGet(
     props.id as any
@@ -135,6 +256,20 @@ const loadData = async () => {
   } else {
     message.error("加载失败，" + res.message);
   }
+
+
+// 获取comment
+  const res2 = await QuestionControllerService.listCommentUsingPost({
+    questionId: question.value.id,
+  });
+  if (res2.code === 0) {
+    comments.value = res2.data;
+    comments.value = flattenComments(res2.data);
+  } else {
+    message.error("加载失败，" + res.message);
+  }
+
+
 };
 
 
@@ -247,4 +382,67 @@ const changeCode = (value: string) => {
 #viewQuestionView .arco-space-horizontal .arco-space-item {
   margin-bottom: 0 !important;
 }
+
+.comments-container {
+  max-height: 650px; /* 设置最大高度 */
+  overflow-y: auto; /* 超出部分显示滚动条 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+.comments-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari 和 Opera */
+}
+/* 确保评论内容容器具有适当的宽度，但不限制其高度 */
+.comment-content {
+  max-width: 100%; /* 或其他适当的最大宽度，根据需要调整 */
+}
+
+.comment-input-area textarea {
+  width: 100%;
+  margin-top: 20px;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.comment-input-area button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.comment-input-area button:hover {
+  background-color: #0056b3;
+}
+
+.add-solution-container {
+  width: 100%; /* 占据整个容器的宽度 */
+  background-color: #f0f0f0; /* 灰色背景 */
+  padding: 10px; /* 一些内边距 */
+  box-sizing: border-box; /* 确保内边距不影响宽度 */
+  text-align: center; /* 使按钮水平居中 */
+}
+
+.add-solution-btn {
+  display: inline-block; /* 使得可以应用内边距和边距 */
+  padding: 5px 10px; /* 按钮内边距 */
+  background-color: #e0f5e0; /* 按钮背景色 */
+  color: #006400; /* 文字颜色 */
+  border: 1px solid #008000; /* 绿色边框 */
+  border-radius: 5px; /* 边框圆角 */
+  cursor: pointer; /* 鼠标悬停时的指针样式 */
+  font-size: 14px; /* 文字大小 */
+  margin: 5px 0; /* 外边距，确保与其他元素的间距 */
+  margin-left: 10px;
+}
+
+.add-solution-btn:hover {
+  background-color: #ccffcc; /* 鼠标悬停时的背景色变化 */
+}
+
 </style>

@@ -9,6 +9,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { BaseResponse_boolean_ } from './models/BaseResponse_boolean_';
 export type { BaseResponse_int_ } from './models/BaseResponse_int_';
+export type { BaseResponse_List_Comment_ } from './models/BaseResponse_List_Comment_';
 export type { BaseResponse_LoginUserVO_ } from './models/BaseResponse_LoginUserVO_';
 export type { BaseResponse_long_ } from './models/BaseResponse_long_';
 export type { BaseResponse_Page_Question_ } from './models/BaseResponse_Page_Question_';
@@ -21,6 +22,8 @@ export type { BaseResponse_QuestionVO_ } from './models/BaseResponse_QuestionVO_
 export type { BaseResponse_string_ } from './models/BaseResponse_string_';
 export type { BaseResponse_User_ } from './models/BaseResponse_User_';
 export type { BaseResponse_UserCodeVO_ } from './models/BaseResponse_UserCodeVO_';
+export type { Comment } from './models/Comment';
+export type { CommentDto } from './models/CommentDto';
 export type { DeleteRequest } from './models/DeleteRequest';
 export type { JudgeCase } from './models/JudgeCase';
 export type { JudgeConfig } from './models/JudgeConfig';
