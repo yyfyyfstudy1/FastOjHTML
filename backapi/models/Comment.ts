@@ -5,7 +5,7 @@
 
 export type Comment = {
     children?: Array<Comment>;
-    content?: number;
+    content?: string;
     createTime?: string;
     id?: number;
     parentCommentId?: number;

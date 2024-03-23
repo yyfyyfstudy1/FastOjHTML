@@ -1,21 +1,21 @@
 <template>
   <div id="viewQuestionView">
     <a-row :gutter="[24, 24]">
-      <a-col :md="12" :xs="24">
+      <a-col :md="13" :xs="24">
         <a-tabs v-model:activeKey="activeTabKey" default-active-key="question">
-          <a-tab-pane key="question" title="题目">
+          <a-tab-pane key="question" title="Question">
             <a-card v-if="question" :title="question.title">
               <a-descriptions
-                title="判题条件:"
+                title="Judgment conditions:"
                 :column="{ xs: 1, md: 2, lg: 3 }"
               >
-                <a-descriptions-item label="时间限制（ms）：">
+                <a-descriptions-item label="Time limit (ms):">
                   {{ question.judgeConfig.timeLimit ?? 0 }}
                 </a-descriptions-item>
-                <a-descriptions-item label="内存限制（KB）：">
+                <a-descriptions-item label="Memory limit (KB):">
                   {{ question.judgeConfig.memoryLimit ?? 0 }}
                 </a-descriptions-item>
-                <a-descriptions-item label="堆栈限制（KB）：">
+                <a-descriptions-item label="Stack limit (KB):">
                   {{ question.judgeConfig.stackLimit ?? 0 }}
                 </a-descriptions-item>
               </a-descriptions>
@@ -25,7 +25,7 @@
                   <a-tag
                     v-for="(tag, index) of question.tags"
                     :key="index"
-                    color="green"
+                    :color="getTagColor(tag)"
                     >{{ tag }}
                   </a-tag>
                 </a-space>
@@ -34,7 +34,7 @@
           </a-tab-pane>
 
 
-          <a-tab-pane key="comment" title="评论"> 
+          <a-tab-pane key="comment" title="Comment"> 
            
            
             <!-- 评论区 -->
@@ -62,22 +62,22 @@
       
         </a-tabs>
       </a-col>
-      <a-col :md="12" :xs="24">
+      <a-col :md="11" :xs="24">
         <a-form :model="form" layout="inline">
           <a-form-item
             field="submitLanguage"
-            label="编程语言："
+            label="Language:"
             style="min-width: 240px"
           >
-            <a-select v-model="form.submitLanguage" placeholder="选择编程语言">
+            <a-select v-model="form.submitLanguage" placeholder="Choose a language">
               <a-option>java</a-option>
-              <a-option disabled>敬请其他更多语言</a-option>
+              <a-option disabled>Other languages are on the way. .</a-option>
             </a-select>
 
             <a-button
             shape="round"
             type="primary"
-            style="min-width: 150px; margin-left: 340px"
+            style="min-width: 150px; margin-left: 270px"
             size="large"
             @click="doSubmit"
             >
@@ -160,6 +160,14 @@ let commentForm = ref({
 });
 
 
+const getTagColor = (tag) => {
+  switch(tag) {
+    case 'Easy': return 'green';
+    case 'Medium': return 'orange';
+    case 'Hard': return 'red';
+    default: return 'gray';
+  }
+};
 
 // 示例评论数据，实际应用中应从外部获取
 const comments = ref([
@@ -305,7 +313,7 @@ const doSubmit = async () => {
   });
   if (res.code === 0) {
     
-    message.success("提交成功，请到已提交题目界面查看");
+    message.success("Submitted successfully");
 
         // 开始轮询
         const intervalId = setInterval(async () => {
@@ -314,7 +322,7 @@ const doSubmit = async () => {
     
     
   } else {
-    message.error("提交失败," + res.message);
+    message.error("Submission Failed," + res.message);
   }
 };
 const queJudgeFinish = ref(false);
@@ -335,7 +343,7 @@ const checkStatus = async (intervalId, questionSubmitId) => {
     if (res.data == 2 || res.data==3) {
       queJudgeFinish.value = true;
       clearInterval(intervalId); // 检测到评判完成，停止轮询
-      message.success("评判完成");
+      message.success("Judging completed");
       // 在评判完成后切换到"Submissions" Tab
       if( activeTabKey.value == 'answer'){
 
@@ -349,12 +357,13 @@ const checkStatus = async (intervalId, questionSubmitId) => {
        activeTabKey.value = 'answer'; // 切换到 Submissions tab
       }
 
-
+      // 关闭code detail
+      
   
   }
   } else {
     clearInterval(intervalId); // 出错时停止轮询
-    message.error("检查状态失败," + res.message);
+    message.error("Check status failed," + res.message);
   }
 };
 

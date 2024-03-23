@@ -12,11 +12,9 @@ import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
 import QuestionsView from "@/views/question/QuestionsView.vue";
 import QuestionSubmitView from "@/views/question/QuestionSubmitView.vue";
 import ViewQuestionsView from "@/views/question/ViewQuestionView.vue";
+import RankView from "@/views/question/RankView.vue";
 
-/**
- * @author Shier
- * @createTime 2023/8/21 星期一 12:16
- */
+
 export const routes: Array<RouteRecordRaw> = [
   {
     path: "/user",
@@ -25,17 +23,17 @@ export const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "/user/login",
-        name: "用户登录",
+        name: "User Login",
         component: UserLoginView,
       },
       {
         path: "/user/info",
-        name: "用户信息",
+        name: "User Info",
         component: UserInfoView,
       },
       {
         path: "/user/register",
-        name: "用户注册",
+        name: "User Register",
         component: UserRegisterView,
       },
     ],
@@ -45,23 +43,28 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/",
-    name: "首页",
+    name: "Main",
     component: QuestionsView,
   },
   {
     path: "/example",
-    name: "示例",
+    name: "Example",
     component: ExampleView,
     meta: { hideInMenu: true },
   },
   {
+    path: "/rankView",
+    name: "Rank",
+    component: RankView,
+  },
+  {
     path: "/question_submit",
-    name: "已提交题目展示",
+    name: "Submittion",
     component: QuestionSubmitView,
   },
   {
     path: "/question/view/:id",
-    name: "在线做题",
+    name: "Solution",
     component: ViewQuestionsView,
     props: true, // 开启接收动态id
     meta: {
@@ -71,7 +74,7 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/question/add",
-    name: "创建题目",
+    name: "Create Problem",
     component: AddQuestionView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
@@ -79,7 +82,7 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/question/update",
-    name: "更新题目",
+    name: "Update Problem",
     component: AddQuestionView,
     meta: {
       hideInMenu: true,
@@ -88,7 +91,7 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/question/manage",
-    name: "管理题目",
+    name: "Manage Problem",
     component: ManageQuestionView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
@@ -96,7 +99,7 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/manage/user",
-    name: "用户管理",
+    name: "User Management",
     component: UserManageView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
@@ -105,7 +108,7 @@ export const routes: Array<RouteRecordRaw> = [
 
   {
     path: "/noAuth",
-    name: "无权限",
+    name: "No Permission",
     component: NoAuthView,
     meta: {
       hideInMenu: true,
@@ -113,7 +116,7 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/introduce",
-    name: "OJ介绍",
+    name: "Introduction",
     component: () => import("../views/SystemIntroduceView.vue"),
   },
   {

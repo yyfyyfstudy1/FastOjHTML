@@ -1,20 +1,20 @@
 <template>
   <div id="questionsView">
     <a-form :model="searchParams" layout="inline" style="margin-left: 300px">
-      <a-form-item field="title" label="题目：" tooltip="请输入搜索的题目">
-        <a-input v-model="searchParams.title" placeholder="请输入搜索题目" />
+      <a-form-item field="title" label="Question：" tooltip="Search Question">
+        <a-input v-model="searchParams.title" placeholder="Search Question" />
       </a-form-item>
       <a-form-item
         field="tags"
-        label="题目标签："
-        tooltip="请输入搜索题目标签"
+        label="Question Tags："
+        tooltip="Search Question Tag"
         style="min-width: 280px"
       >
-        <a-input-tag v-model="searchParams.tags" placeholder="请输入题目标签" />
+        <a-input-tag v-model="searchParams.tags" placeholder="Search Tags" />
       </a-form-item>
       <a-form-item>
         <a-button type="outline" shape="round" status="normal" @click="doSubmit"
-          >搜索
+          >Search
         </a-button>
       </a-form-item>
     </a-form>
@@ -39,12 +39,11 @@
       <template #tags="{ record }">
         <a-space wrap>
           <a-tag
-            size="medium"
-            v-for="(tag, index) of record.tags"
-            :key="index"
-            color="green"
-            >{{ tag }}
-          </a-tag>
+          size="medium"
+          v-for="(tag, index) of record.tags"
+          :key="index"
+          :color="getTagColor(tag)"
+        >{{ tag }}</a-tag>
         </a-space>
       </template>
       <template #acceptedRate="{ record }">
@@ -69,7 +68,7 @@
             type="primary"
             @click="toQuestionPage(record)"
           >
-            做题
+           Exercise
           </a-button>
         </a-space>
       </template>
@@ -130,27 +129,27 @@ onMounted(() => {
 
 const columns = [
   {
-    title: "题号",
+    title: "Number",
     dataIndex: "id",
     align: "center",
   },
   {
-    title: "题目",
+    title: "Title",
     dataIndex: "title",
     align: "center",
   },
   {
-    title: "题目标签",
+    title: "Tags",
     slotName: "tags",
     align: "center",
   },
   {
-    title: "通过率",
+    title: "Acceptance",
     slotName: "acceptedRate",
     align: "center",
   },
   {
-    title: "创建时间",
+    title: "Create Time",
     slotName: "createTime",
     align: "center",
     sortable: {
@@ -158,7 +157,7 @@ const columns = [
     },
   },
   {
-    title: "操作",
+    title: "Optional",
     slotName: "optional",
     align: "center",
   },
@@ -193,6 +192,15 @@ const toQuestionPage = (question: Question) => {
   router.push({
     path: `/question/view/${question.id}`,
   });
+};
+
+const getTagColor = (tag) => {
+  switch(tag) {
+    case 'Easy': return 'green';
+    case 'Medium': return 'orange';
+    case 'Hard': return 'red';
+    default: return 'gray';
+  }
 };
 
 /**

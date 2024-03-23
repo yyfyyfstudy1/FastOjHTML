@@ -2,13 +2,13 @@
   <div id="userInfoView">
     <a-descriptions-item>
       <a-avatar :size="100" shape="circle">
-        <img alt="头像" :src="loginUser.userAvatar" />
+        <img alt="Avatar" :src="loginUser.userAvatar" />
       </a-avatar>
     </a-descriptions-item>
-    <a-card title="我的信息">
+    <a-card title="My Information">
       <a-descriptions :data="data" size="large" column="1" bordered />
       <template #extra>
-        <a-badge status="success" text="在线" />
+        <a-badge status="success" text="Online" />
       </template>
     </a-card>
     <a-modal
@@ -33,7 +33,7 @@
               v-if="updateForm.userAvatar"
             >
               <a-avatar :size="70" shape="circle">
-                <img alt="头像" :src="userAvatarImg" />
+                <img alt="Avatar" :src="userAvatarImg" />
               </a-avatar>
               <div class="arco-upload-list-picture-mask">
                 <IconEdit />
@@ -45,22 +45,22 @@
       <a-form
         :model="loginUser"
         label-align="right"
-        title="个人信息"
+        title="PersonalInfo"
         style="max-width: 480px; margin: 0 auto"
       >
-        <a-form-item field="用户名称" label="账号 :">
-          <a-input v-model="updateForm.userName" placeholder="请输入用户名称" />
+        <a-form-item field="username" label="account :">
+          <a-input v-model="updateForm.userName" placeholder="Please enter username" />
         </a-form-item>
-        <a-form-item field="邮箱" label="邮箱 :">
-          <a-input v-model="updateForm.email" placeholder="请输入邮箱" />
+        <a-form-item field="Email" label="Email :">
+          <a-input v-model="updateForm.email" placeholder="Please enter email" />
         </a-form-item>
-        <a-form-item field="电话" label="电话 :">
-          <a-input v-model="updateForm.phone" placeholder="请输入电话号码" />
+        <a-form-item field="Phone" label="Phone :">
+          <a-input v-model="updateForm.phone" placeholder="Please enter phone number" />
         </a-form-item>
-        <a-form-item field="userProfile" label="简介 :">
+        <a-form-item field="userProfile" label="Introduct:">
           <a-textarea
             v-model="updateForm.userProfile"
-            placeholder="请输入简介"
+            placeholder="Please enter the introduction"
           />
         </a-form-item>
       </a-form>
@@ -73,7 +73,7 @@
         type="outline"
         style="margin: 10px"
       >
-        <a-link @click="toIndex">首页</a-link>
+        <a-link @click="toIndex">Main</a-link>
       </a-button>
       <a-button
         shape="round"
@@ -82,7 +82,7 @@
         type="outline"
         style="margin: 10px"
         @click="openModalForm"
-        >修改用户信息
+        >Modify User Information
       </a-button>
     </div>
   </div>
@@ -109,40 +109,40 @@ let loginUser = store.state.user.loginUser;
 
 const data = [
   {
-    label: "用户名称：",
+    label: "Nickname:",
     value: loginUser.userName,
   },
   {
-    label: "账号名称：",
+    label: "Username:",
     value: loginUser.userAccount,
   },
   {
-    label: "我的简介：",
+    label: "About me:",
     value: loginUser.userProfile,
   },
   {
-    label: "用户角色：",
-    value: loginUser.userRole === "user" ? "普通用户" : "管理员",
+    label: "User Role：",
+    value: loginUser.userRole === "user" ? "General User" : "Admin User",
   },
   {
-    label: "邮箱：",
-    value: loginUser.email !== "" ? loginUser.email : "未填写",
+    label: "Email：",
+    value: loginUser.email !== "" ? loginUser.email : "unfilled",
   },
   {
-    label: "电话：",
-    value: loginUser.phone !== "" ? loginUser.phone : "未填写",
+    label: "Phone：",
+    value: loginUser.phone !== "" ? loginUser.phone : "unfilled",
   },
   {
-    label: "当前状态：",
-    value: loginUser.userState !== "" ? loginUser.userState : "暂无简介",
+    label: "Status：",
+    value: loginUser.userState !== "" ? loginUser.userState : "No profile yet",
   },
 
   {
-    label: "创建时间：",
+    label: "Create time:",
     value: moment(loginUser.createTime).format("YYYY-MM-DD HH:mm:ss"),
   },
   {
-    label: "修改时间：",
+    label: "Update Time：",
     value: moment(loginUser.updateTime).format("YYYY-MM-DD HH:mm:ss"),
   },
 ];
@@ -164,9 +164,9 @@ const uploadAvatar = async () => {
   );
   if (res.code === 0) {
     userAvatarImg = res.data;
-    Message.success("上传成功，点击确认即可修改头像");
+    Message.success("The upload is successful, click Confirm to modify the avatar.");
   } else {
-    Message.error("上传失败！" + res.data);
+    Message.error("upload failed!" + res.data);
   }
 };
 /**
@@ -184,11 +184,11 @@ const handleOk = async () => {
     userAvatar: userAvatarImg,
   });
   if (res.code === 0) {
-    Message.success("更新成功！");
+    Message.success("update completed!");
     visible.value = false;
     location.reload();
   } else {
-    Message.error("更新失败！", res.msg);
+    Message.error("Update failed!", res.msg);
   }
 };
 const closeModel = () => {

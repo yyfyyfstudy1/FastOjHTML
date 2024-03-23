@@ -106,9 +106,9 @@ const handleSubmit = async () => {
       path: "/user/login",
       replace: true,
     });
-    message.success("注册成功！");
+    message.success("registration success!");
   } else {
-    message.error("注册失败！" + res.message);
+    message.error("registration failed!" + res.message);
   }
 };
 /**

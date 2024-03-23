@@ -30,10 +30,10 @@
                 {{
                   `${
                     index === "message"
-                      ? "结果"
+                      ? "Result"
                       : index === "time"
-                      ? "耗时"
-                      : "消耗内存"
+                      ? "Time"
+                      : "Memory"
                   }`
                 }}
                 {{ "：" + info }}
@@ -50,10 +50,10 @@
         <template #submitState="{ record }">
           <div @click="handleItemClick(record)">
           <!--        判题状态（0 - 待判题、1 - 判题中、2 - 成功、3 - 失败）-->
-          <a-tag v-if="record.submitState === 0" color="cyan">待判题</a-tag>
-          <a-tag v-if="record.submitState === 1" color="blue">判题中</a-tag>
-          <a-tag v-if="record.submitState === 2" color="green">成功</a-tag>
-          <a-tag v-if="record.submitState === 3" color="red">失败</a-tag>
+          <a-tag v-if="record.submitState === 0" color="cyan">Waiting</a-tag>
+          <a-tag v-if="record.submitState === 1" color="blue">Judging</a-tag>
+          <a-tag v-if="record.submitState === 2" color="green">Success</a-tag>
+          <a-tag v-if="record.submitState === 3" color="red">Failed</a-tag>
           </div>
         </template>
       </a-table>
@@ -64,6 +64,8 @@
         <h3 style="margin: 0;">Code Detail</h3>
         <a href="#" style="text-decoration: underline; cursor: pointer;" @click.prevent="backToList"><h3>Back</h3></a>
       </div>
+
+      
       <CodeEditor
         :language="'java'"
         :value="historyCode"
@@ -111,6 +113,7 @@ const props = defineProps({
 const colors = ["orange", "green", "blue", "blue"];
 
 const loadData = async () => {
+  backToList()
   const res = await QuestionControllerService.listUserSubmissionUsingPost({
     ...searchParams.value,
     sortField: "createTime",
@@ -155,22 +158,22 @@ onMounted(() => {
 
 const columns = [
   {
-    title: "提交状态",
+    title: "Submission",
     slotName: "submitState",
     align: "center",
   },
   {
-    title: "判题信息",
+    title: "Information",
     slotName: "judgeInfo",
     align: "center",
   },
   {
-    title: "编程语言",
+    title: "language",
     dataIndex: "submitLanguage",
     align: "center",
   },
   {
-    title: "创建时间",
+    title: "Create Time",
     slotName: "createTime",
     align: "center",
   },

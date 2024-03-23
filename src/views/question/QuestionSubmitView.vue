@@ -1,20 +1,20 @@
 <template>
   <div id="questionSubmitView">
     <a-form :model="searchParams" layout="inline" style="margin-left: 300px">
-      <a-form-item field="questionId" label="题号" tooltip="请输入题目Id">
+      <a-form-item field="questionId" label="Question number" tooltip="Please enter the question ID">
         <a-input
           v-model="searchParams.questionId"
-          placeholder="请输入搜索题号"
+          placeholder="Search question number"
         />
       </a-form-item>
       <a-form-item
         field="submitLanguage"
-        label="编程语言："
+        label="programming language:"
         style="min-width: 240px"
       >
         <a-select
           v-model="searchParams.submitLanguage"
-          placeholder="选择编程语言"
+          placeholder="Choose language"
         >
           <a-option>java</a-option>
           <a-option>cpp</a-option>
@@ -25,7 +25,7 @@
       </a-form-item>
       <a-form-item>
         <a-button type="outline" shape="round" status="normal" @click="doSubmit"
-          >搜索
+          >search
         </a-button>
       </a-form-item>
       <a-form-item>
@@ -34,7 +34,7 @@
           shape="round"
           status="success"
           @click="loadData"
-          >刷新
+          >refresh
         </a-button>
       </a-form-item>
     </a-form>
@@ -67,10 +67,10 @@
             {{
               `${
                 index === "message"
-                  ? "结果"
+                  ? "Result"
                   : index === "time"
-                  ? "耗时"
-                  : "消耗内存"
+                  ? "Time"
+                  : "Memory"
               }`
             }}
             {{ "：" + info }}
@@ -90,10 +90,10 @@
       </template>
       <template #submitState="{ record }">
         <!--        判题状态（0 - 待判题、1 - 判题中、2 - 成功、3 - 失败）-->
-        <a-tag v-if="record.submitState === 0" color="cyan">待判题</a-tag>
-        <a-tag v-if="record.submitState === 1" color="green">判题中</a-tag>
-        <a-tag v-if="record.submitState === 2" color="blue">成功</a-tag>
-        <a-tag v-if="record.submitState === 3" color="red">失败</a-tag>
+        <a-tag v-if="record.submitState === 0" color="cyan">Waiting</a-tag>
+        <a-tag v-if="record.submitState === 1" color="green">Judging</a-tag>
+        <a-tag v-if="record.submitState === 2" color="blue">Success</a-tag>
+        <a-tag v-if="record.submitState === 3" color="red">Fail</a-tag>
       </template>
     </a-table>
   </div>
@@ -154,37 +154,37 @@ onMounted(() => {
 
 const columns = [
   {
-    title: "提交号",
+    title: "commit",
     dataIndex: "id",
     align: "center",
   },
   {
-    title: "题号",
+    title: "Question",
     slotName: "questionId",
     align: "center",
   },
   {
-    title: "提交者",
+    title: "submitter",
     dataIndex: "userId",
     align: "center",
   },
   {
-    title: "判题信息",
+    title: "Judgment",
     slotName: "judgeInfo",
     align: "center",
   },
   {
-    title: "编程语言",
+    title: "language",
     dataIndex: "submitLanguage",
     align: "center",
   },
   {
-    title: "提交状态",
+    title: "status",
     slotName: "submitState",
     align: "center",
   },
   {
-    title: "创建时间",
+    title: "Creation",
     slotName: "createTime",
     align: "center",
   },

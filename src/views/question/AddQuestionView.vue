@@ -9,9 +9,9 @@
       "
     >
       <template v-if="route.path.startsWith('/question/update')">
-        修改题目信息
+        Modify question information
       </template>
-      <template v-else>创建题目</template>
+      <template v-else>Create question</template>
     </div>
     <a-form
       :model="form"
@@ -21,42 +21,42 @@
     >
       <a-form-item
         field="title"
-        label="题目："
-        tooltip="建议填写题目"
+        label="topic:"
+        tooltip="It is recommended to fill in the questions"
         required
-        :rules="[{ required: true, message: '题目是必填的' }]"
+        :rules="[{ required: true, message: 'Question is required' }]"
       >
         <a-input
           v-model="form.title"
-          placeholder="请输入标题"
+          placeholder="Please enter a title"
           style="max-width: 500px"
         />
       </a-form-item>
       <a-form-item
         field="tags"
-        label="题目标签："
+        label="Title tag:"
         required
-        tooltip="建议填写题目标签"
+        tooltip="It is recommended to fill in the title tag"
       >
         <a-input-tag
           v-model="form.tags"
-          placeholder="请选择标签"
+          placeholder="Please select a label"
           style="max-width: 500px"
         />
       </a-form-item>
       <a-form-item
         field="content"
-        label="题目内容："
+        label="Question content:"
         required
-        tooltip="建议填写题目内容"
+        tooltip="It is recommended to fill in the question content"
       >
         <MdEditor :value="form.content" :handle-change="onContentChange" />
       </a-form-item>
       <a-form-item
         field="answer"
-        label="题目答案："
+        label="Question answer:"
         required
-        tooltip="建议填写题目答案"
+        tooltip="It is recommended to fill in the answer to the question"
       >
         <MdEditor :value="form.answer" :handle-change="onAnswerChange" />
       </a-form-item>
@@ -66,7 +66,7 @@
 
 
 
-      <a-form-item field="mainFunction" label="主函数" required tooltip="please fill the main function">
+      <a-form-item field="mainFunction" label="main function" required tooltip="please fill the main function">
           <CodeEditor
           v-if="form.mainFunction"
           :language="'java'"
@@ -84,7 +84,7 @@
       </a-form-item>
 
 
-      <a-form-item field="userFunction" label="题目函数" required tooltip="please fill the main function">
+      <a-form-item field="userFunction" label="Question function" required tooltip="please fill the main function">
         <CodeEditor
         v-if="form.userFunction"
         :language="'java'"
@@ -116,21 +116,21 @@
 
       <a-divider :margin="10" />
       <a-form-item
-        label="判题配置："
+        label="Question configuration:"
         :content-flex="false"
         :merge-props="false"
         required
-        tooltip="建议填写判题配置"
+        tooltip="It is recommended to fill in the question configuration"
       >
         <a-space direction="vertical" style="min-width: 500px">
           <a-form-item
             field="judgeConfig.timeLimit"
-            label="时间限制："
-            tooltip="单位：ms（毫秒）"
+            label="time limit:"
+            tooltip="Unit: ms (millisecond)"
           >
             <a-input-number
               v-model="form.judgeConfig.timeLimit"
-              placeholder="请输入时间限制"
+              placeholder="Please enter a time limit"
               mode="button"
               min="0"
               size="large"
@@ -138,12 +138,12 @@
           </a-form-item>
           <a-form-item
             field="judgeConfig.memoryLimit"
-            label="内存限制："
-            tooltip="单位：kb"
+            label="Memory limit:"
+            tooltip="Unit: kb"
           >
             <a-input-number
               v-model="form.judgeConfig.memoryLimit"
-              placeholder="请输入内存限制"
+              placeholder="Please enter memory limit"
               mode="button"
               min="0"
               size="large"
@@ -330,20 +330,20 @@ const doSubmit = async () => {
     );
     if (res.code === 0) {
       // 更新成功则返回到管理界面
-      message.success("更新成功");
+      message.success("update completed");
       await router.push({
         path: "/question/manage",
         replace: true,
       });
     } else {
-      message.error("更新失败，" + res.message);
+      message.error("Update failed," + res.message);
     }
   } else {
     const res = await QuestionControllerService.addQuestionUsingPost(
       form.value
     );
     if (res.code === 0) {
-      message.success("创建成功");
+      message.success("Created successfully");
       // 添加成功后清空
       form.value.answer = "";
       form.value.tags = [];
@@ -353,7 +353,7 @@ const doSubmit = async () => {
       form.value.mainFunction = "";
       form.value.userFunction = ""
     } else {
-      message.error("创建失败，" + res.message);
+      message.error("Creation failed," + res.message);
     }
   }
 };

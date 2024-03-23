@@ -93,9 +93,9 @@ const handleSubmit = async () => {
       path: "/",
       replace: true,
     });
-    message.success("登录成功！");
+    message.success("login successful!");
   } else {
-    message.error("登陆失败，" + res.message);
+    message.error("Login failed," + res.message);
   }
 };
 /**

@@ -10,6 +10,7 @@ export type User = {
     id?: number;
     isDelete?: number;
     phone?: string;
+    questionPass?: number;
     updateTime?: string;
     userAccount?: string;
     userAvatar?: string;

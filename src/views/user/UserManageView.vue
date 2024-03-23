@@ -330,10 +330,10 @@ const doDelete = async (user: User) => {
     id: user.id,
   });
   if (res.code === 0) {
-    message.success("删除成功");
+    message.success("successfully deleted");
     loadData();
   } else {
-    message.error("删除失败");
+    message.error("failed to delete");
   }
 };
 
@@ -360,9 +360,9 @@ const uploadAvatar = async () => {
   );
   if (res.code === 0) {
     userAvatarImg = res.data;
-    Message.success("上传成功，点击确认即可修改头像");
+    Message.success("The upload is successful, click Confirm to modify the avatar.");
   } else {
-    Message.error("上传失败！" + res.data);
+    Message.error("upload failed!" + res.data);
   }
 };
 
@@ -375,11 +375,11 @@ const handleOk = async () => {
     userAvatar: userAvatarImg,
   });
   if (res.code === 0) {
-    Message.success("更新成功！");
+    Message.success("update completed!");
     visible.value = false;
     location.reload();
   } else {
-    Message.error("更新失败！", res.msg);
+    Message.error("Update failed!", res.msg);
   }
 };
 const closeModel = () => {

@@ -3,7 +3,6 @@
     :value="value"
     :mode="mode"
     :plugins="plugins"
-    :locale="locale"
     @change="handleChange"
   />
 </template>
@@ -29,18 +28,14 @@ interface Props {
 }
 
 const plugins = [
-  gfm({
-    locale: gfmLocale,
-  }),
+  gfm(),
   highlight(),
   // 中文显示
-  math({
-    locale: mathLocale,
-  }),
+  math(),
   gemoji(),
 ];
 /**
- * 属性默认值
+* Properties default value
  */
 const props = withDefaults(defineProps<Props>(), {
   value: () => "",

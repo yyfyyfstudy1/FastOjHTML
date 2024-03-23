@@ -50,7 +50,7 @@
                 <icon-idcard />
               </template>
               <template #default>
-                <a-anchor-link href="/user/info">个人信息</a-anchor-link>
+                <a-anchor-link href="/user/info">Personal</a-anchor-link>
               </template>
             </a-doption>
             <a-doption>
@@ -58,7 +58,7 @@
                 <icon-poweroff />
               </template>
               <template #default>
-                <a-anchor-link @click="logout">退出登录</a-anchor-link>
+                <a-anchor-link @click="logout">Logout</a-anchor-link>
               </template>
             </a-doption>
           </template>

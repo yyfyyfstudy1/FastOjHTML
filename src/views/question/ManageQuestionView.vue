@@ -267,10 +267,10 @@ const doDelete = async (question: Question) => {
     id: question.id,
   });
   if (res.code === 0) {
-    message.success("删除成功");
+    message.success("successfully deleted");
     loadData();
   } else {
-    message.error("删除失败");
+    message.error("failed to delete");
   }
 };
 

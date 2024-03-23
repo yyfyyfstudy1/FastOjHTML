@@ -5,7 +5,7 @@
         <a-space>
           <img src="../assets/logo.png" class="logo" />
           <div style="margin-left: 15px; font-size: 25px; font-weight: bold">
-            猫 OJ 在线判题系统
+            Fast OJ online question judging system
           </div>
         </a-space>
       </a-layout-header>
