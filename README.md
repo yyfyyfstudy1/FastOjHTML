@@ -1,8 +1,8 @@
-# shieroj-frontend
+# FastOJ-frontend
 
-## 项目安装和部署
+## Project installation and deployment
 
-### 1、安装项目依赖
+### 1. Install project dependencies
 
 ```bash
 npm install
@@ -10,45 +10,44 @@ npm install
 yarn
 ```
 
-本项目使用到的依赖/插件（不需执行）
+Dependencies/plug-ins used in this project (no need to execute)
 
 ```bash
-# 组件库
+# Component library
 yarn add --dev @arco-design/web-vue
 # Axios 工具
 yarn add axios
-# MarkDown 编辑器依赖
+# MarkDown editor dependencies
 yarn add @bytemd/vue-next
-# 为了使用多语言 locals目录在 bytemd 下
 yarn add bytemd
 yarn add @bytemd/plugin-math @bytemd/plugin-highlight @bytemd/plugin-gfm
-yarn add highlight.js # 代码高亮
+yarn add highlight.js # code highlighting
 
-# 代码编辑器
+# code editor
 yarn add monaco-editor
-# 将webpack和文本编辑器整合在一起，便于打包和安装
+# Integrate webpack and text editor for easy packaging and installation
 yarn add monaco-editor-webpack-plugin
 ```
 
-### 获取后端代码接口
+### Get the backend code interface
 
 ```
 openapi --input http://localhost:8104/api//v2/api-docs --output ./backapi --client axios
 ```
 
-### 2、项目构建
+### 2. Project construction
 
 ```bash
 yarn build
 ```
 
-### 3、生产环境运行
+### 3. Production environment operation
 
 ```
 yarn serve
 ```
 
-### 修复文件
+### repair file
 
 ```
 yarn lint

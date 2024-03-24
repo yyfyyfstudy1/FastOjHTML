@@ -10,7 +10,7 @@ OpenAPI.WITH_CREDENTIALS = true;
 const baseUrl =
   process.env.NODE_ENV === "development"
     ? "http://localhost:8104"
-    : "http://oj.kongshier.top";
+    : "http://129.226.84.238:8104";
 
 OpenAPI.BASE = baseUrl;
 console.log("当前环境：", process.env.NODE_ENV, "请求地址", baseUrl);

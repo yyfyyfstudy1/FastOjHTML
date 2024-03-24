@@ -68,7 +68,7 @@
                 <icon-user />
               </template>
               <template #default>
-                <a-anchor-link href="/user/login">登录</a-anchor-link>
+                <a-anchor-link href="/user/login">Login</a-anchor-link>
               </template>
             </a-doption>
             <a-doption>
@@ -76,7 +76,7 @@
                 <icon-user />
               </template>
               <template #default>
-                <a-anchor-link href="/user/register">注册</a-anchor-link>
+                <a-anchor-link href="/user/register">Register</a-anchor-link>
               </template>
             </a-doption>
           </template>

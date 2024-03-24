@@ -28,7 +28,7 @@ router.beforeEach(async (to, from, next) => {
       !loginUser.userRole ||
       loginUser.userRole === ACCESS_ENUM.NOT_LOGIN
     ) {
-      message.warning("请登录！");
+      message.warning("Please Login First！");
       next(`/user/login?redirect=${to.fullPath}`);
       return;
     }

@@ -1,6 +1,6 @@
 <template>
   <div id="userLoginView">
-    <h1 style="margin: 32px 0">新手上线 猫 OJ 判题系统</h1>
+    <h1 style="margin: 32px 0">Join us, FastOJ plateform</h1>
     <a-form
       style="max-width: 320px; margin: 0 auto"
       label-align="left"
@@ -10,39 +10,39 @@
       <a-form-item
         required
         field="userAccount"
-        label="账号"
-        tooltip="账号不少于 4 位"
+        label="Account"
+        tooltip="Account number must be no less than 4 digits"
         :rules="[
-          { required: true, message: '账号不能为空' },
-          { minLength: 4, message: '账号长度不能低于4位' },
+          { required: true, message: 'Account cannot be empty' },
+          { minLength: 4, message: 'The length cannot be less than 4 digits' },
         ]"
       >
-        <a-input v-model="form.userAccount" placeholder="请输入账号" />
+        <a-input v-model="form.userAccount" placeholder="Please input Username" />
       </a-form-item>
       <a-form-item
         required
         field="userPassword"
-        tooltip="密码不能小于8位"
+        tooltip="Password cannot be less than 8 characters"
         :rules="[
-          { required: true, message: '密码不能为空' },
-          { minLength: 4, message: '密码不能小于8位' },
+          { required: true, message: 'password can not be blank' },
+          { minLength: 4, message: 'Password cannot be less than 8 characters' },
         ]"
-        label="密码"
+        label="Password"
       >
         <a-input-password
           v-model="form.userPassword"
-          placeholder="请输入密码"
+          placeholder="Please enter password"
         />
       </a-form-item>
       <a-form-item
         required
         field="checkPassword"
-        tooltip="密码不少于 8 位"
-        label="确认密码"
+        tooltip="Password must be no less than 8 characters"
+        label="Confirm Password"
       >
         <a-input-password
           v-model="form.checkPassword"
-          placeholder="请确认密码"
+          placeholder="Please confirm your password"
         />
       </a-form-item>
     </a-form>
@@ -54,7 +54,7 @@
         status="success"
         @click="toIndex"
       >
-        首 页
+        Main
       </a-button>
       <a-button
         style="margin: 25px; width: 150px"
@@ -64,7 +64,7 @@
         html-type="submit"
         @click="handleSubmit"
       >
-        新 手 注 册
+        Register
       </a-button>
     </a-space>
   </div>
@@ -92,7 +92,7 @@ const handleSubmit = async () => {
     form?.checkPassword?.length !== form.userPassword?.length ||
     form.checkPassword !== form.userPassword
   ) {
-    Message.error("两次输入密码不一致");
+    Message.error("The password entered twice is inconsistent");
     return;
   }
 
