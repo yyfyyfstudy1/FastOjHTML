@@ -9,7 +9,7 @@
       </a-layout-content>
       <a-layout-footer class="footer"
         ><a href="https://github.com/yyfyyfstudy1" target="_blank">
-          FastOJ By YYfstudy</a
+          FastOJ By YyfStudy1</a
         >
       </a-layout-footer>
     </a-layout>
